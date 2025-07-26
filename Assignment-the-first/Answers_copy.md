@@ -39,6 +39,49 @@ Create an algorithm to demultiplex paired-end sequencing reads using two index F
         Total count of unknown index(es)
 
 2. Describe output
+
+Inputs
+
+    R1.fastq — forward biological reads
+
+    R2.fastq — reverse biological reads
+
+    I1.fastq — index1 read (forward index)
+
+    I2.fastq — index2 read (reverse index, needs to be reverse complemented)
+
+    known_indexes.txt — list of 24 known index sequences (8bp each, A/C/G/T only)
+
+Outputs
+
+    Demultiplexed FASTQ files:
+
+        For each valid matched index-pair (24 x 24 = 576 possibilities, but only write files for pairs found), create:
+
+            R1_index1-index2.fastq
+
+            R2_index1-index2.fastq
+
+        For index-hopped reads (known I1 and I2, but mismatched pair):
+
+            R1_indexhopped.fastq, R2_indexhopped.fastq
+
+        For unknown reads (invalid/unknown/N/low-quality indexes):
+
+            R1_unknown.fastq, R2_unknown.fastq
+
+    Annotated headers:
+
+        Modify read headers in all output FASTQs to include the index pair: @SEQ_ID index1-index2
+
+    Summary report (printed or saved as .txt):
+
+        Count of properly matched reads per index pair
+
+        Total index-hopped read count
+
+        Total unknown index count
+
 3. Upload your [4 input FASTQ files](../TEST-input_FASTQ) and your [>=6 expected output FASTQ files](../TEST-output_FASTQ).
 4. Pseudocode
 5. High level functions. For each function, be sure to include:
