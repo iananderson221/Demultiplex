@@ -44,11 +44,11 @@ Inputs
 
     R1.fastq — forward biological reads
 
-    R2.fastq — reverse biological reads
+    R4.fastq — reverse biological reads
 
-    I1.fastq — index1 read (forward index)
+    R2.fastq — index1 read (forward index)
 
-    I2.fastq — index2 read (reverse index, needs to be reverse complemented)
+    R3.fastq — index2 read (reverse index, needs to be reverse complemented)
 
     known_indexes.txt — list of 24 known index sequences (8bp each, A/C/G/T only)
 
