@@ -170,7 +170,7 @@ Added!
 
             Write the Read 1 and Read 2 records to a general “unknown” file
 
-    Repeat steps 4–9 until the end of all four input files is reached
+    Repeat until the end of all four input files is reached
 
     After all records have been processed, generate a summary report:
 
