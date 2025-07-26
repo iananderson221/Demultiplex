@@ -192,49 +192,49 @@ Outputs
 def reverse_complement(seq: str) -> str:
     '''Takes a DNA sequence string and returns its reverse complement.'''
     return rev_comp
-# Input: "ATCG"
-# Expected output: "CGAT"
+Input: "ATCG"
+Expected output: "CGAT"
 
 def convert_phred(letter: str) -> int:
     '''Takes a single ASCII character (string) encoded in Phred+33 and
     returns the quality score value as an integer.'''
     return qscore
-# Input: "I"
-# Expected output: 40
+Input: "I"
+Expected output: 40
 
 def is_valid_index(index: str, known_indexes: list) -> bool:
     '''Checks whether the given index string is in the known index list and contains only valid nucleotides (A/C/G/T).'''
     return validity
-# Input: "ACGTACGT", known_indexes = ["ACGTACGT", "TTTTTTTT"]
-# Expected output: True
+Input: "ACGTACGT", known_indexes = ["ACGTACGT", "TTTTTTTT"]
+Expected output: True
 
 def check_quality(qual: str, cutoff: int) -> bool:
     '''Evaluates whether all base quality scores in the quality string are above a given cutoff.'''
     return is_above_cutoff
-# Input: "IIIIIIII", cutoff = 30
-# Expected output: True
+Input: "IIIIIIII", cutoff = 30
+Expected output: True
 
 def annotate_header(header: str, index1: str, index2: str) -> str:
     '''Appends the index1-index2 pair to the read header string.'''
     return annotated_header
-# Input: "@SEQ_ID", index1 = "AAAAAAAT", index2 = "TTTTTTTT"
-# Expected output: "@SEQ_ID AAAAAAAT-TTTTTTTT"
+Input: "@SEQ_ID", index1 = "AAAAAAAT", index2 = "TTTTTTTT"
+Expected output: "@SEQ_ID AAAAAAAT-TTTTTTTT"
 
 def categorize_read(index1: str, index2: str, known_indexes: list, qual1: str, qual2: str, cutoff: int) -> str:
     '''Determines whether a read is "matched", "hopped", or "unknown" based on index validity, matching, and quality.'''
     return category
-# Input: index1 = "AAAAAAAT", index2 = "AAAAAAAT", known_indexes = [...], qual1 = "IIIIIIII", qual2 = "IIIIIIII", cutoff = 30
-# Expected output: "matched"
+Input: index1 = "AAAAAAAT", index2 = "AAAAAAAT", known_indexes = [...], qual1 = "IIIIIIII", qual2 = "IIIIIIII", cutoff = 30
+Expected output: "matched"
 
 def write_record(output_files: dict, category: str, index_pair: str, r1_lines: list, r2_lines: list) -> None:
     '''Writes the annotated read pair to the appropriate output file based on its category.'''
     return None
-# Input: category = "matched", index_pair = "AAAAAAAT-TTTTTTTT", r1_lines = [...], r2_lines = [...]
-# Expected output: record written to R1_AAAAAAAT-TTTTTTTT.fastq and R2_AAAAAAAT-TTTTTTTT.fastq
+Input: category = "matched", index_pair = "AAAAAAAT-TTTTTTTT", r1_lines = [...], r2_lines = [...]
+Expected output: record written to R1_AAAAAAAT-TTTTTTTT.fastq and R2_AAAAAAAT-TTTTTTTT.fastq
 
 def update_counters(category: str, index1: str, index2: str, counters: dict) -> None:
     '''Increments the appropriate counters depending on whether the read is matched, hopped, or unknown.'''
     return None
-# Input: category = "hopped", index1 = "AAAAAAAT", index2 = "CCCCCCCC", counters = {...}
-# Expected output: hopped count += 1; hopped["AAAAAAAT"]["CCCCCCCC"] += 1
+Input: category = "hopped", index1 = "AAAAAAAT", index2 = "CCCCCCCC", counters = {...}
+Expected output: hopped count += 1; hopped["AAAAAAAT"]["CCCCCCCC"] += 1
 
