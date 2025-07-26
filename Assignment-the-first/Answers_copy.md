@@ -17,6 +17,27 @@
     
 ## Part 2
 1. Define the problem
+
+Create an algorithm to demultiplex paired-end sequencing reads using two index FASTQ files and a list of 24 known index sequences. The algorithm must:
+
+    Sort read pairs into:
+
+        Correctly matched index-pairs (R1 + R2 FASTQ file for each unique index-pair)
+
+        Index-hopped pairs (wrong but known index combinations)
+
+        Reads with unknown indexes (either not in the known list or containing ambiguous bases like N, or below quality threshold)
+
+    Annotate read headers with the index-pair used (e.g. @SEQ_ID AAAAAAAA-TTTTTTTT).
+
+    Report statistics:
+
+        Read-pair count per matched index-pair
+
+        Total count of index-hopped reads
+
+        Total count of unknown index(es)
+
 2. Describe output
 3. Upload your [4 input FASTQ files](../TEST-input_FASTQ) and your [>=6 expected output FASTQ files](../TEST-output_FASTQ).
 4. Pseudocode
