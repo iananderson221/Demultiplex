@@ -180,9 +180,8 @@ Outputs
 
     Print or save how many times each mismatched index-pair occurred (e.g., how many times A was paired with B and vice versa)
 
-    Print or save the total number of unknown reads 
-
----
+    Print or save the total number of unknown reads
+```
 
 
 5. High level functions. For each function, be sure to include:
