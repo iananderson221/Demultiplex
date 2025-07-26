@@ -17,7 +17,7 @@
     
 ## Part 2
 1. Define the problem
-
+```
 Create an algorithm to demultiplex paired-end sequencing reads using two index FASTQ files and a list of 24 known index sequences. The algorithm must:
 
     Sort read pairs into:
@@ -37,7 +37,7 @@ Create an algorithm to demultiplex paired-end sequencing reads using two index F
         Total count of index-hopped reads
 
         Total count of unknown index(es)
-
+```
 2. Describe output
 
 Inputs
@@ -83,6 +83,8 @@ Outputs
         Total unknown index count
 
 3. Upload your [4 input FASTQ files](../TEST-input_FASTQ) and your [>=6 expected output FASTQ files](../TEST-output_FASTQ).
+
+Added!
 
 4. Pseudocode
 ```
