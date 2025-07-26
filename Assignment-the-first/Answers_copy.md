@@ -202,7 +202,6 @@ def reverse_complement(seq: str) -> str:
 
 ---
 
-### 🎚️ `convert_phred`
 
 ```python
 def convert_phred(letter: str) -> int:
@@ -216,7 +215,6 @@ def convert_phred(letter: str) -> int:
 
 ---
 
-### ✅ `is_valid_index`
 
 ```python
 def is_valid_index(index: str, known_indexes: list) -> bool:
@@ -230,7 +228,6 @@ def is_valid_index(index: str, known_indexes: list) -> bool:
 
 ---
 
-### 📏 `check_quality`
 
 ```python
 def check_quality(qual: str, cutoff: int) -> bool:
@@ -244,7 +241,6 @@ def check_quality(qual: str, cutoff: int) -> bool:
 
 ---
 
-### 🏷️ `annotate_header`
 
 ```python
 def annotate_header(header: str, index1: str, index2: str) -> str:
@@ -257,7 +253,6 @@ def annotate_header(header: str, index1: str, index2: str) -> str:
 
 ---
 
-### 🧬 `categorize_read`
 
 ```python
 def categorize_read(index1: str, index2: str, known_indexes: list, qual1: str, qual2: str, cutoff: int) -> str:
@@ -273,7 +268,6 @@ def categorize_read(index1: str, index2: str, known_indexes: list, qual1: str, q
 
 ---
 
-### 📝 `write_record`
 
 ```python
 def write_record(output_files: dict, category: str, index_pair: str, r1_lines: list, r2_lines: list) -> None:
@@ -289,7 +283,6 @@ def write_record(output_files: dict, category: str, index_pair: str, r1_lines: l
 
 ---
 
-### 📊 `update_counters`
 
 ```python
 def update_counters(category: str, index1: str, index2: str, counters: dict) -> None:
