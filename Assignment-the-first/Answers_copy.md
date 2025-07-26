@@ -85,105 +85,102 @@ Outputs
 3. Upload your [4 input FASTQ files](../TEST-input_FASTQ) and your [>=6 expected output FASTQ files](../TEST-output_FASTQ).
 
 4. Pseudocode
+```
+  Open the 4 input FASTQ files:
 
-# 📄 Demultiplexing Algorithm Overview
+        One file for Read 1 (biological read)
 
-This document outlines the logic and steps for implementing a demultiplexing algorithm that processes Illumina paired-end FASTQ data with dual indexes.
+        One file for Read 2 (biological read)
 
----
+        One file for Index 1 (forward index)
 
-## 🔹 1. Open the Input Files
+        One file for Index 2 (reverse index)
 
-- One file for **Read 1** (biological read)
-- One file for **Read 2** (biological read)
-- One file for **Index 1** (forward index)
-- One file for **Index 2** (reverse index)
-- One file containing the list of **valid index sequences**
+        Also open the file containing the list of valid index sequences
 
----
+    Read and store all valid indexes from the index list into memory for fast lookup.
 
-## 🔹 2. Load Valid Indexes
+    Initialize counters and tracking tables:
 
-- Read and store all valid indexes from the index list file into memory (e.g., a set) for fast lookup.
+        A counter for each unique index-pair to track the number of correctly matched read pairs
 
----
+        A counter to track the total number of index-hopped reads
 
-## 🔹 3. Initialize Counters and Tracking Structures
+        A table to track the number of times each index was incorrectly paired with another (i.e., index1 paired with wrong index2)
 
-- A counter for **each valid index-pair** to track matched reads.
-- A counter for **total index-hopped reads**.
-- A nested table or dictionary to track **incorrect index pairings** (e.g., `index1:index2` mismatches).
-- A counter for **unknown or low-quality index reads**.
+        A counter to track the number of reads with unknown or low-quality indexes
 
----
+    Start reading from all four FASTQ files at the same time, record by record:
 
-## 🔹 4. Process Input FASTQ Records
+        Read one complete record from each file (4 lines per record)
 
-- Read **one complete record (4 lines)** from each of the four input FASTQ files.
+    Extract the index sequences from the Index 1 and Index 2 reads:
 
----
+        Reverse complement the Index 2 sequence before comparing it to the list of valid indexes
 
-## 🔹 5. Extract Index Sequences
+    Check if this index-pair is “unknown”:
 
-- From the Index 1 and Index 2 records:
-  - **Reverse complement** the Index 2 sequence.
-  - Compare against the list of known valid indexes.
+        If either index sequence contains an invalid character (e.g., 'N')
 
----
+        OR either index sequence is not found in the list of valid indexes
 
-## 🔹 6. Check for "Unknown" Indexes
+        OR either index has an average quality score below the required threshold
 
-Mark a read pair as **unknown** if:
-- Either index sequence contains invalid characters (e.g., `'N'`)
-- OR either index is not in the list of known indexes
-- OR either index has an **average quality score below the threshold**
+            Then:
 
-**Actions:**
-- Mark the read as `"unknown"`
-- Increment the unknown counter
-- Skip further classification and go to writing output
+                Mark this read pair as “unknown”
 
----
+                Increment the unknown reads counter
 
-## 🔹 7. Classify the Read Pair
+                Skip remaining checks and proceed to step 9
 
-- If `Index 1 == reverse_complement(Index 2)`:
-  - Mark the read as **"matched"**
-  - Increment the matched counter for that **index-pair**
-- Else:
-  - Mark the read as **"index-hopped"**
-  - Increment the **hopped counter**
-  - Track the **specific mismatch** combination (e.g., A→B)
+    Check if this read pair is a matched pair or index-hopped:
 
----
+        If the Index 1 sequence is the same as the (reverse complemented) Index 2 sequence:
 
-## 🔹 8. Annotate Headers
+            Mark the read pair as “matched”
 
-- Append the `index1-index2` pair to the **header line** of both Read 1 and Read 2.
+            Increment the matched read count for that specific index-pair
 
----
+        Else:
 
-## 🔹 9. Write to Output Files
+            Mark the read pair as “index-hopped”
 
-- **Matched:** Write to files named after the index-pair (e.g., `R1_AAAAAAAT-TTTTTTTT.fq`)
-- **Index-Hopped:** Write to general `indexhopped` files.
-- **Unknown:** Write to general `unknown` files.
+            Increment the index-hopped counter
 
----
+            Increment the count for that specific mismatched index-pair (index1 combined with index2)
 
-## 🔹 10. Repeat Until All Records Are Processed
+    Prepare the read pair for writing:
 
-- Continue steps 4–9 until the end of all four input FASTQ files is reached.
+        Modify the header line of both Read 1 and Read 2 to include the index-pair used (e.g., append index1-index2)
 
----
+    Write the read pair to the appropriate output files:
 
-## 🔹 11. Generate Final Report
+        If the read was marked as matched:
 
-- For each matched index-pair:
-  - Output the total number of **properly matched** reads
-- Output the total number of **index-hopped** reads
-- Output the **frequency of each mismatched index-pair**
-- Output the total number of **unknown** reads
+            Write the Read 1 and Read 2 records to a unique file named after the index-pair
+
+        If the read was marked as index-hopped:
+
+            Write the Read 1 and Read 2 records to a general “index-hopped” file
+
+        If the read was marked as unknown:
+
+            Write the Read 1 and Read 2 records to a general “unknown” file
+
+    Repeat steps 4–9 until the end of all four input files is reached
+
+    After all records have been processed, generate a summary report:
+
+    For each correctly matched index-pair:
+
+        Print or save the total number of reads assigned to it
+
+    Print or save the total number of index-hopped reads
+
+    Print or save how many times each mismatched index-pair occurred (e.g., how many times A was paired with B and vice versa)
+
+    Print or save the total number of unknown reads 
 
 ---
 
