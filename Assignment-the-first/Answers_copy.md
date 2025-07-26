@@ -83,7 +83,106 @@ Outputs
         Total unknown index count
 
 3. Upload your [4 input FASTQ files](../TEST-input_FASTQ) and your [>=6 expected output FASTQ files](../TEST-output_FASTQ).
+
 4. Pseudocode
+
+    Open the 4 input FASTQ files:
+
+        One file for Read 1 (biological read)
+
+        One file for Read 2 (biological read)
+
+        One file for Index 1 (forward index)
+
+        One file for Index 2 (reverse index)
+
+        Also open the file containing the list of valid index sequences
+
+    Read and store all valid indexes from the index list into memory for fast lookup.
+
+    Initialize counters and tracking tables:
+
+        A counter for each unique index-pair to track the number of correctly matched read pairs
+
+        A counter to track the total number of index-hopped reads
+
+        A table to track the number of times each index was incorrectly paired with another (i.e., index1 paired with wrong index2)
+
+        A counter to track the number of reads with unknown or low-quality indexes
+
+    Start reading from all four FASTQ files at the same time, record by record:
+
+        Read one complete record from each file (4 lines per record)
+
+    Extract the index sequences from the Index 1 and Index 2 reads:
+
+        Reverse complement the Index 2 sequence before comparing it to the list of valid indexes
+
+    Check if this index-pair is “unknown”:
+
+        If either index sequence contains an invalid character (e.g., 'N')
+
+        OR either index sequence is not found in the list of valid indexes
+
+        OR either index has an average quality score below the required threshold
+
+            Then:
+
+                Mark this read pair as “unknown”
+
+                Increment the unknown reads counter
+
+                Skip remaining checks and proceed to step 9
+
+    Check if this read pair is a matched pair or index-hopped:
+
+        If the Index 1 sequence is the same as the (reverse complemented) Index 2 sequence:
+
+            Mark the read pair as “matched”
+
+            Increment the matched read count for that specific index-pair
+
+        Else:
+
+            Mark the read pair as “index-hopped”
+
+            Increment the index-hopped counter
+
+            Increment the count for that specific mismatched index-pair (index1 combined with index2)
+
+    Prepare the read pair for writing:
+
+        Modify the header line of both Read 1 and Read 2 to include the index-pair used (e.g., append index1-index2)
+
+    Write the read pair to the appropriate output files:
+
+        If the read was marked as matched:
+
+            Write the Read 1 and Read 2 records to a unique file named after the index-pair
+
+        If the read was marked as index-hopped:
+
+            Write the Read 1 and Read 2 records to a general “index-hopped” file
+
+        If the read was marked as unknown:
+
+            Write the Read 1 and Read 2 records to a general “unknown” file
+
+    Repeat steps 4–9 until the end of all four input files is reached
+
+    After all records have been processed, generate a summary report:
+
+    For each correctly matched index-pair:
+
+        Print or save the total number of reads assigned to it
+
+    Print or save the total number of index-hopped reads
+
+    Print or save how many times each mismatched index-pair occurred (e.g., how many times A was paired with B and vice versa)
+
+    Print or save the total number of unknown reads
+
+
 5. High level functions. For each function, be sure to include:
     1. Description/doc string
     2. Function headers (name and parameters)
