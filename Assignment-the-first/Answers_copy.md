@@ -189,9 +189,7 @@ Outputs
     3. Test examples for individual functions
     4. Return statement
 
-## 📘 Function Definitions (Pseudocode)
 
-### 🔁 `reverse_complement`
 
 ```python
 def reverse_complement(seq: str) -> str:
