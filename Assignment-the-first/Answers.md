@@ -12,8 +12,21 @@
 
 2. Per-base NT distribution
     1. Use markdown to insert your 4 histograms here.
-    2. **YOUR ANSWER HERE**
-    3. R2 = 3976613, R3 = 3328051, Total = 7304664 
+### Read 1 – Mean Quality Scores
+![Read 1](R1_mean_quality_scores.png)
+
+### Read 2 – Mean Quality Scores
+![Read 2](R2_mean_quality_scores.png)
+
+### Read 3 – Mean Quality Scores
+![Read 3](R3_mean_quality_scores.png)
+
+### Read 4 – Mean Quality Scores
+![Read 4](R4_mean_quality_scores.png)
+
+
+2. **YOUR ANSWER HERE**
+3. R2 = 3976613, R3 = 3328051, Total = 7304664 
        ```zcat 1294_S1_L008_R2_001.fastq.gz | grep -v "@" | grep "N" | wc -l```
         ```zcat 1294_S1_L008_R3_001.fastq.gz | grep -v "@" | grep "N" | wc -l```
     
