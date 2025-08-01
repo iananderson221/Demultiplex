@@ -15,7 +15,7 @@
     2. **YOUR ANSWER HERE**
     3. R2 = 3976613, R3 = 3328051, Total = 7304664 
        ```zcat 1294_S1_L008_R2_001.fastq.gz | grep -v "@" | grep "N" | wc -l```
-```zcat 1294_S1_L008_R3_001.fastq.gz | grep -v "@" | grep "N" | wc -l```
+        ```zcat 1294_S1_L008_R3_001.fastq.gz | grep -v "@" | grep "N" | wc -l```
     
 ## Part 2
 1. Define the problem
