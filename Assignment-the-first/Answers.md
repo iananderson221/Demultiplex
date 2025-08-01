@@ -25,7 +25,8 @@
 ![Read 4](R4_mean_quality_scores.png)
 
 
-2. **YOUR ANSWER HERE**
+2. For index reads a good cutoff would be Q >= 20 because errors in index reads can lead to misidentification of samples, but the impact is often less severe than errors in biological reads. A Q20 cutoff provides a reasonable balance between maintaining enough data for accurate identification and filtering out low-quality reads that could lead to errors. For biological reads a good cutoff would be Q >= 30 because downstream analyses like gene expression quantification require a high degree of accuracy. Low-quality reads can introduce noise and errors, leading to false-positive or false-negative results. A Q30 cutoff ensures that the data used for these analyses is of high enough quality to minimize the risk of misleading false results.
+
 3. R2 = 3976613, R3 = 3328051, Total = 7304664 
        ```zcat 1294_S1_L008_R2_001.fastq.gz | grep -v "@" | grep "N" | wc -l```
         ```zcat 1294_S1_L008_R3_001.fastq.gz | grep -v "@" | grep "N" | wc -l```
