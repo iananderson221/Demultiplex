@@ -121,7 +121,7 @@ Full list of results in summary.md
 ---
 
 ## Figures
-(Figures in summary.md)
+(Figures in results directory)
 
 ---
 
