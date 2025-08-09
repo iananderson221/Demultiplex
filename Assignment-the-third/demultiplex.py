@@ -4,7 +4,7 @@ import argparse
 import gzip as gz
 import matplotlib.pyplot as plt
 
-# === FUNCTIONS ===
+# FUNCTIONS
 def reverse_complement(seq: str) -> str:
     comp = {'A':'T','T':'A','C':'G','G':'C','N':'N'}
     # avoid building intermediate list; join directly
@@ -17,7 +17,7 @@ def check_quality(qual: str, cutoff: int) -> bool:
         total += (ord(ch) - 33)
     return total >= cutoff * len(qual)
 
-# === ARGPARSE ===
+# ARGPARSE
 parser = argparse.ArgumentParser(description="Demultiplex paired-end FASTQ reads by dual indexes (exact match).")
 parser.add_argument("-r1", required=True, help="Read 1 FASTQ.gz (biological)")
 parser.add_argument("-r2", required=True, help="Read 2 FASTQ.gz (biological)")
@@ -26,7 +26,7 @@ parser.add_argument("-i2", required=True, help="Index 2 FASTQ.gz (will be revers
 parser.add_argument("-q", required=True, type=int, help="Minimum average Q-score cutoff for index reads")
 args = parser.parse_args()
 
-# === CONSTANTS ===
+# CONSTANTS
 RESULTS_DIR = "/projects/bgmp/ica/bioinfo/Bi622/Demultiplex/results"
 known_indexes = [
     "GTAGCGTA", "CGATCGAT", "GATCAAGG", "AACAGCGA",
@@ -38,7 +38,7 @@ known_indexes = [
 ]
 known_set = set(known_indexes)
 
-# === PREOPEN EXACTLY 52 OUTPUT FILES (use faster gzip compression) ===
+# PREOPEN EXACTLY 52 OUTPUT FILES (use faster gzip compression)
 matched_files = {}
 for idx in known_indexes:
     matched_files[idx] = [
@@ -51,13 +51,13 @@ hopped_R2 = gz.open(f"{RESULTS_DIR}/R2_hopped.fastq.gz", "wt", compresslevel=1)
 unknown_R1 = gz.open(f"{RESULTS_DIR}/R1_unknown.fastq.gz", "wt", compresslevel=1)
 unknown_R2 = gz.open(f"{RESULTS_DIR}/R2_unknown.fastq.gz", "wt", compresslevel=1)
 
-# === COUNTERS ===
+# COUNTERS
 matched_counts = {idx: 0 for idx in known_indexes}
 hopped_counts = {}  # dict[idx1][idx2] = count
 unknown_count = 0
 total_reads = 0
 
-# === PROCESS ===
+# PROCESS
 with gz.open(args.r1, "rt") as r1_f, \
      gz.open(args.r2, "rt") as r2_f, \
      gz.open(args.i1, "rt") as i1_f, \
@@ -118,14 +118,14 @@ with gz.open(args.r1, "rt") as r1_f, \
             uR1.write(h1 + s1 + p1 + q1)
             uR2.write(h2 + s2 + p2 + q2)
 
-# === CLOSE OUTPUTS ===
+# CLOSE OUTPUTS
 for idx in matched_files:
     matched_files[idx][0].close()
     matched_files[idx][1].close()
 hopped_R1.close(); hopped_R2.close()
 unknown_R1.close(); unknown_R2.close()
 
-# === COMPUTE STATS ===
+# COMPUTE STATS
 matched_total = sum(matched_counts.values())
 hopped_total = 0
 for i1 in hopped_counts:
@@ -157,7 +157,7 @@ for i1 in known_indexes:
                 hopped_pairs.append((f"{i1}->{i2}", c, p))
 hopped_pairs.sort(key=lambda x: x[1], reverse=True)
 
-# === WRITE MARKDOWN REPORT ===
+# WRITE MARKDOWN REPORT
 report_path = f"{RESULTS_DIR}/summary.md"
 with open(report_path, "w") as rep:
     rep.write("# Demultiplexing Summary\n\n")
@@ -183,7 +183,7 @@ with open(report_path, "w") as rep:
     rep.write("- `matched_counts.png`: Matched reads per sample index\n")
     rep.write("- `hopped_top15.png`: Top 15 hopped pairs by count\n")
 
-# === PLOTS ===
+# PLOTS
 # 1) Category breakdown
 plt.figure(figsize=(6,4))
 plt.bar(["Matched","Hopped","Unknown"], [matched_total, hopped_total, unknown_count])
@@ -222,7 +222,7 @@ if topN > 0:
     plt.savefig(f"{RESULTS_DIR}/hopped_top15.png", dpi=150)
     plt.close()
 
-# === STDOUT SNAPSHOT ===
+# STDOUT SNAPSHOT
 print("\nDemultiplexing complete.")
 print(f"Total pairs: {total_reads}")
 print(f"Matched total: {matched_total}")
